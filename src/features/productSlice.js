@@ -5,7 +5,8 @@ import {productData} from "./productData";
 
 const initialState = {
     products : productData,
-    cart : []
+    cart : [],
+    netTotal : 0
 }
 
 const productSlice = createSlice({
@@ -13,7 +14,14 @@ const productSlice = createSlice({
     initialState,
     reducers : {
         getCartProducts:(state,action)=>{
-            state.cart.push(action.payload);
+            let findIndex = state.cart.findIndex((item)=>{
+                return item.id == action.payload.id;
+            })
+            if(findIndex != -1){
+                state.cart[findIndex].quantity += 1;
+            }else{
+                state.cart.push(action.payload);
+            }
         },
         increaseQuantity:(state,action)=>{
             state.cart[action.payload].quantity += 1;
@@ -38,6 +46,8 @@ const productSlice = createSlice({
                 let total = price*quantity;
                 netTotal+=total;
             })
+            console.log(netTotal);
+            
             state.netTotal = netTotal;
         }
     }

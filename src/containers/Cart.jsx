@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { decreaseQuantity, getCartTotal, increaseQuantity, removeCart } from "../features/productSlice";
 
 function Cart() {
-  const cart = useSelector((state) => state.product.cart);
+  const {cart,netTotal} = useSelector((state) => state.product);
 
   const dispatch=useDispatch();
-  
+  useEffect(()=>{
+    dispatch(getCartTotal());
+  },[cart])
 
   return (
     <>
@@ -156,7 +158,7 @@ function Cart() {
                       <span className="text-black">Subtotal</span>
                     </div>
                     <div className="col-md-6 text-right">
-                      <strong className="text-black">${}</strong>
+                      <strong className="text-black">${netTotal}</strong>
                     </div>
                   </div>
                   <div className="row mb-5">
@@ -164,7 +166,7 @@ function Cart() {
                       <span className="text-black">Total</span>
                     </div>
                     <div className="col-md-6 text-right">
-                      <strong className="text-black">${}</strong>
+                      <strong className="text-black">${netTotal}</strong>
                     </div>
                   </div>
                   <div className="row">
